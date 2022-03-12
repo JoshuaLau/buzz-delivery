@@ -1,14 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import OrderPickUp from './screens/OrderPickUp'
+import FlashMessage from "react-native-flash-message";
 
+
+const Stack = createNativeStackNavigator();
+//add other screens here and into screens folder
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator> 
+        <Stack.Screen name="OrderPickUp" component={OrderPickUp} options={{
+          title: "Order Details",
+        }}/>
+      </Stack.Navigator>
+      <FlashMessage position="top" />
+    </NavigationContainer>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
