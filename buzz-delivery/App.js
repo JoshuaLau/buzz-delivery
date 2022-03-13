@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OrderPickUp from './screens/OrderPickUp'
+import TripDetails from './screens/TripDetails'
 import FlashMessage from "react-native-flash-message";
 
 
@@ -12,8 +13,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator> 
-        <Stack.Screen name="OrderPickUp" component={OrderPickUp} options={{
+        {/* <Stack.Screen name="OrderPickUp" component={OrderPickUp} options={{
           title: "Order Details",
+        }}/> */}
+        <Stack.Screen name="TripDetails" component={TripDetails} options={{
+          title: "Trip Details",
         }}/>
       </Stack.Navigator>
       <FlashMessage position="top" />
