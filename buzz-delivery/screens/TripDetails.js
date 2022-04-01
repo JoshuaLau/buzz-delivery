@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
@@ -9,6 +9,8 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 const TripDetails = () => {
+
+    const navigation = useNavigation()
 
     const [inputField, setInputField] = useState({
         restaurantName: '',
@@ -27,6 +29,7 @@ const TripDetails = () => {
             message: "Trip details have been posted! Customers can now request an order.",
             type: "info",
           });
+          navigation.navigate("RequestsPage");
           // eventuall connect to FireBase to store trip info
     }
 
@@ -37,55 +40,41 @@ const TripDetails = () => {
             <Text style={styles.titleText}>Trip Details</Text>
 
             <Text style={styles.promptText}> Name of Restaurant </Text>
-            <input
-            style = {{marginTop: 5, marginLeft: 10, borderRadius: 5, width: '50%', height: 20}}
-            type = "text"
+            <TextInput
+            style = {styles.input}
             value = {inputField.restaurantName}
-            onChange = {inputHandler}
-            />
-
-            <br/>
+            onChange = {inputHandler}>
+            </TextInput>
 
 
             <Text style={styles.promptText}> Link to Menu </Text>
-            <input
-            style = {{marginTop: 5, marginLeft: 10, borderRadius: 5, width: '50%', height: 20}}
-            type = "text"
+            <TextInput
+            style = {styles.input}
             value = {inputField.menuLink}
-            onChange = {inputHandler}
-            />
-
-            <br/>
+            onChange = {inputHandler}>
+            </TextInput>
 
             <Text style={styles.promptText}> Drop-Off Location </Text>
-            <input
-            style = {{marginTop: 5, marginLeft: 10, borderRadius: 5, width: '50%', height: 20}}
-            type = "text"
+            <TextInput
+            style = {styles.input}
             value = {inputField.dropLocation}
-            onChange = {inputHandler}
-            />
-
-            <br/>
+            onChange = {inputHandler}>
+            </TextInput>
 
             <Text style={styles.promptText}> Estimated Time of Arrival </Text>
-            <input
-            style = {{marginTop: 5, marginLeft: 10, borderRadius: 5, width: '50%', height: 20}}
-            type = "text"
+            <TextInput
+            style = {styles.input}
             value = {inputField.estimatedTime}
-            onChange = {inputHandler}
-            />
-
-            <br/>
+            onChange = {inputHandler}>
+            </TextInput>
 
             <Text style={styles.promptText}> Maximum Requests </Text>
-            <input
-            style = {{marginTop: 5, marginLeft: 10, borderRadius: 5, width: '50%', height: 20}}
+            <TextInput
+            style = {styles.input}
             type = "number"
             value = {inputField.maxRequests}
-            onChange = {inputHandler}
-            />
-
-            <br/>
+            onChange = {inputHandler}>
+            </TextInput>
 
             <TouchableOpacity onPress={handleTripConfirmation}>
                 <View style={styles.button}>
@@ -128,5 +117,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'left',
         marginLeft: 10
-    }
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+      }
 })
