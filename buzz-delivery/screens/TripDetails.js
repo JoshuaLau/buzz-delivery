@@ -46,6 +46,7 @@ const TripDetails = () => {
 
             <br/>
 
+
             <Text style={styles.promptText}> Link to Menu </Text>
             <input
             style = {{marginTop: 5, marginLeft: 10, borderRadius: 5, width: '50%', height: 20}}

@@ -13,11 +13,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator> 
-        {/* <Stack.Screen name="OrderPickUp" component={OrderPickUp} options={{
-          title: "Order Details",
-        }}/> */}
         <Stack.Screen name="TripDetails" component={TripDetails} options={{
           title: "Trip Details",
+        }}/>
+        <Stack.Screen name="OrderPickUp" component={OrderPickUp} options={{
+          title: "Order Details",
         }}/>
       </Stack.Navigator>
       <FlashMessage position="top" />
