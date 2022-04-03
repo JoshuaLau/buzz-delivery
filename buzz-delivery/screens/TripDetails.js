@@ -29,7 +29,9 @@ const TripDetails = () => {
             message: "Trip details have been posted! Customers can now request an order.",
             type: "info",
           });
-          navigation.navigate("RequestsPage");
+        // navigation.navigate("OrderPickUp");
+        navigation.navigate("DriverStatusUpdate");
+        //   navigation.navigate("RequestsPage");
           // eventuall connect to FireBase to store trip info
     }
 
