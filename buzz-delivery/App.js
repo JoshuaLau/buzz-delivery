@@ -6,7 +6,11 @@ import OrderPickUp from './screens/OrderPickUp'
 import TripDetails from './screens/TripDetails'
 import RequestsPage  from './screens/RequestsPage';
 import DriverLocation from './screens/DriverLocation';
+import Login from './screens/Login';
 import FlashMessage from "react-native-flash-message";
+import AvailableDrivers from './screens/AvailableDrivers';
+import CompleteOrder from './screens/CompleteOrder';
+import DriverDetail from './screens/DriverDetail';
 
 
 const Stack = createNativeStackNavigator();
@@ -36,9 +40,14 @@ export default function App() {
         <Stack.Screen name="DriverLocation" component={DriverLocation} options={{
           title: "Driver Location",
         }}/> 
+        <Stack.Screen name="Login" component={Login} options={{
+          title: "Login",
+        }}/> 
       </Stack.Navigator>
       <FlashMessage position="top" />
     </NavigationContainer>
+
+    // [SPRINT 5] need to add new pages into the flow
   );
 }
 

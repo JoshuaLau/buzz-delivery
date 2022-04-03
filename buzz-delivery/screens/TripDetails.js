@@ -30,7 +30,7 @@ const TripDetails = () => {
             type: "info",
           });
           navigation.navigate("RequestsPage");
-          // eventuall connect to FireBase to store trip info
+          // eventually connect to FireBase to store trip info
     }
 
 
