@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, ScrollView, Image } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { updateOrderStage } from '../firebase';
+import { render } from 'react-dom';
+import Card from '../components/card';
 
 
 
@@ -44,6 +47,7 @@ const OrderPickUp = () => {
             message: "Delivery has begun. Customers have been notified.",
             type: "info",
           });
+        //updateOrderStage("Returning"); won't work until we setup auth
     }
 
     const handleArrival = () => {
@@ -52,16 +56,24 @@ const OrderPickUp = () => {
             message: "Customers have been notified that you've arrived!",
             type: "success",
           });
+        //updateOrderStage("Arrived"); won't work until we setup auth
     }
 
 
   return (
       <View>
+        <Image
+        style={styles.icon}
+        source={require('../assets/delivery_icon.png')}
+        />
+        <Text style={styles.bigText}> Heading To: West Village</Text>
           <Text style={styles.titleText}>Order Summary</Text>
+          <View style={{maxHeight: "40%"}}>
+          <ScrollView>
         {
            list.map((item, index) => {
             return <ListItem
-            Component={TouchableHighlight}
+            Component={Card}
             containerStyle={{}}
             disabledStyle={{ opacity: 0.5 }}
             key={index}
@@ -78,6 +90,8 @@ const OrderPickUp = () => {
           </ListItem>
            })
         }
+        </ScrollView>
+        </View>
     <TouchableOpacity disabled={!buttonEnabled} onPress={handleDeliverFood}>
     <View style={[styles.button, {opacity: buttonEnabled ? 1 : 0.2}]}>
       <Text style={styles.buttonText}>Deliver to Campus</Text>
@@ -117,7 +131,22 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         fontSize: 16,
         textAlign: 'center',
-        marginTop: 40,
+        marginTop: 10,
         marginBottom: 10
+    }, 
+    icon: {
+      alignSelf: 'center',
+      backgroundColor: 'white',
+      width: 240,
+      height: 165
+    },
+    bigText: {
+      color: 'black',
+      fontWeight: 'bold',
+      fontSize: 30,
+      textAlign: 'center',
+      marginTop: 10,
+      marginBottom: 10
     }
+
 })
