@@ -14,13 +14,13 @@ import {
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBMHnLrgItJILkd789aQQEpFC69McbohIM",
-  authDomain: "buzz-delivery-fdf32.firebaseapp.com",
-  projectId: "buzz-delivery-fdf32",
-  storageBucket: "buzz-delivery-fdf32.appspot.com",
-  messagingSenderId: "360258172405",
-  appId: "1:360258172405:web:7155f4f6a752fe6d439cbc",
-  measurementId: "G-BRD1V75YH1"
+  apiKey: "AIzaSyDlpGNj7e7xxZCBza7EosP1nh8K7Psv3ek",
+  authDomain: "deliverbuzz-26d98.firebaseapp.com",
+  databaseURL: "https://deliverbuzz-26d98-default-rtdb.firebaseio.com",
+  projectId: "deliverbuzz-26d98",
+  storageBucket: "deliverbuzz-26d98.appspot.com",
+  messagingSenderId: "365279079729",
+  appId: "1:365279079729:web:7b074f75ff56670161d410"
 };
 
 // Initialize Firebase
@@ -28,7 +28,7 @@ const app = firebase.initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-const firestore = getFirestore()
+const firestore = getFirestore();
 
 var user_uid;
 export async function createUser(email, password, driver, n, v) {
@@ -37,12 +37,16 @@ export async function createUser(email, password, driver, n, v) {
     if (driver) {
       await setDoc(doc(firestore, "driver", user_uid), {
         name: n,
-        venmo: v
+        venmo: v,
+        rating: -1,
+        total_ratings: 0
       })
     } else {
       await setDoc(doc(firestore, "customer", user_uid), {
         name: n,
-        venmo: v
+        venmo: v,
+        rating: -1,
+        total_ratings: 0
       })
     }
   });
@@ -51,8 +55,17 @@ export async function createUser(email, password, driver, n, v) {
   return user_uid;
 }
 
-export function signIn(email, password) {
-  const userCredentials = signInWithEmailAndPassword(auth, email, password);
+export async function userType() {
+  var docSnap = await getDoc(doc(firestore, "customer", auth.currentUser.uid));
+  if (!docSnap.exists()) {
+    console.log("gothere")
+    return "driver";
+  };
+  return "customer";
+}
+
+export async function signIn(email, password) {
+  const userCredentials = await signInWithEmailAndPassword(auth, email, password);
   onAuthStateChanged(auth, (user_log) => {
     if (user_log) {
       user_uid = user_log.uid;

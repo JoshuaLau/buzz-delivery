@@ -11,6 +11,7 @@ import FlashMessage from "react-native-flash-message";
 import AvailableDrivers from './screens/AvailableDrivers';
 import CompleteOrder from './screens/CompleteOrder';
 import DriverDetail from './screens/DriverDetail';
+import SignUp from './screens/SignUp';
 
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,12 @@ export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
       <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} options={{
+          title: "Login",
+        }}/> 
+        <Stack.Screen name="SignUp" component={SignUp} options={{
+          title: "SignUp",
+        }}/> 
         <Stack.Screen name="TripDetails" component={TripDetails} options={{
           title: "Trip Details",
         }}/>
@@ -40,8 +47,8 @@ export default function App() {
         <Stack.Screen name="DriverLocation" component={DriverLocation} options={{
           title: "Driver Location",
         }}/> 
-        <Stack.Screen name="Login" component={Login} options={{
-          title: "Login",
+        <Stack.Screen name="AvailableDrivers" component={AvailableDrivers} options={{
+          title: "Available Drivers",
         }}/> 
       </Stack.Navigator>
       <FlashMessage position="top" />
