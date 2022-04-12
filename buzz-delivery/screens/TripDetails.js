@@ -4,33 +4,40 @@ import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { saveTripDetails } from '../firebase';
 
 
 
 
 const TripDetails = () => {
 
-    const navigation = useNavigation()
+    const [restaurantName, setRestaurantName] = useState('')
+    const [menuLink, setMenuLink] = useState('')
+    const [dropLocation, setDropLocation] = useState('')
+    const [estimatedTime, setEstimatedTime] = useState('')
+    const [maxRequests, setMaxRequests] = useState(0)
 
-    const [inputField, setInputField] = useState({
-        restaurantName: '',
-        menuLink: '',
-        dropLocation: '',
-        estimatedTime: '',
-        maxRequests: 0
-    })
+    const navigation = useNavigation()
 
     const inputHandler = (e) => {
         setInputField( {[e.target.name]: e.target.value})
     }
 
     const handleTripConfirmation = () => {
-        showMessage({
-            message: "Trip details have been posted! Customers can now request an order.",
-            type: "info",
-          });
-          navigation.navigate("RequestsPage");
-          // eventually connect to FireBase to store trip info
+        try {
+            saveTripDetails(restaurantName, menuLink, dropLocation, estimatedTime, maxRequests);
+            showMessage({
+                message: "Trip details have been posted! Customers can now request an order.",
+                type: "info",
+              });
+              navigation.navigate("RequestsPage");
+        } catch (error) {
+            showMessage({
+                message: "There was something wrong with your information. Please try again." + error,
+                type: "error",
+              });
+              return;
+        }
     }
 
 
@@ -42,38 +49,38 @@ const TripDetails = () => {
             <Text style={styles.promptText}> Name of Restaurant </Text>
             <TextInput
             style = {styles.input}
-            value = {inputField.restaurantName}
-            onChange = {inputHandler}>
+            value = {restaurantName}
+            onChangeText = {text => setRestaurantName(text)}>
             </TextInput>
 
 
             <Text style={styles.promptText}> Link to Menu </Text>
             <TextInput
             style = {styles.input}
-            value = {inputField.menuLink}
-            onChange = {inputHandler}>
+            value = {menuLink}
+            onChangeText = {text => setMenuLink(text)}>
             </TextInput>
 
             <Text style={styles.promptText}> Drop-Off Location </Text>
             <TextInput
             style = {styles.input}
-            value = {inputField.dropLocation}
-            onChange = {inputHandler}>
+            value = {dropLocation}
+            onChangeText = {text => setDropLocation(text)}>
             </TextInput>
 
             <Text style={styles.promptText}> Estimated Time of Arrival </Text>
             <TextInput
             style = {styles.input}
-            value = {inputField.estimatedTime}
-            onChange = {inputHandler}>
+            value = {estimatedTime}
+            onChangeText = {text => setEstimatedTime(text)}>
             </TextInput>
 
             <Text style={styles.promptText}> Maximum Requests </Text>
             <TextInput
             style = {styles.input}
             type = "number"
-            value = {inputField.maxRequests}
-            onChange = {inputHandler}>
+            value = {maxRequests}
+            onChangeText = {text => setMaxRequests(Number(text))}>
             </TextInput>
 
             <TouchableOpacity onPress={handleTripConfirmation}>
