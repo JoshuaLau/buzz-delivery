@@ -6,15 +6,15 @@ import OrderPickUp from './screens/OrderPickUp'
 import TripDetails from './screens/TripDetails'
 import DriverStatusUpdate from './screens/DriverStatusUpdate';
 import RequestsPage  from './screens/RequestsPage';
+import CustomerPaymentScreen from './screens/CustomerPaymentScreen';
 import FlashMessage from "react-native-flash-message";
-
 
 const Stack = createNativeStackNavigator();
 //add other screens here and into screens folder
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator> 
+      <Stack.Navigator>
         <Stack.Screen name="TripDetails" component={TripDetails} options={{
           title: "Trip Details",
         }}/>
@@ -27,12 +27,14 @@ export default function App() {
         <Stack.Screen name="DriverStatusUpdate" component={DriverStatusUpdate} options={{
           title: "Driver Status Update",
         }}/>
+        <Stack.Screen name="CustomerPaymentScreen" component={CustomerPaymentScreen} options={{
+          title: "Customer Payment Screen",
+        }}/>
       </Stack.Navigator>
       <FlashMessage position="top" />
     </NavigationContainer>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
