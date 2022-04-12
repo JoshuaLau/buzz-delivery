@@ -55,6 +55,30 @@ export async function createUser(email, password, driver, n, v) {
   return user_uid;
 }
 
+export async function saveTripDetails(restaurantName, menuLink, dropLocation, estimatedTime, maxRequests) {
+  user_uid = auth.currentUser.uid;
+
+  var driverDoc = await getDoc(doc(firestore, "driver", user_uid));
+
+  var driver_name;
+  if (!driverDoc.exists()) {
+    driver_name = "TEMP";
+  } else {
+    driver_name = driverDoc.get("name");
+  }
+  
+  await setDoc(doc(firestore, "trips", user_uid), {
+    driver: driver_name,
+    restaurant_name: restaurantName,
+    menu_link: menuLink,
+    drop_location: dropLocation,
+    estimated_time: estimatedTime,
+    max_requests: maxRequests
+  });
+
+  return user_uid;
+}
+
 export async function userType() {
   var docSnap = await getDoc(doc(firestore, "customer", auth.currentUser.uid));
   if (!docSnap.exists()) {
