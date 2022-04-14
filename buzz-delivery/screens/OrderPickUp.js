@@ -11,8 +11,8 @@ import Card from '../components/card';
 
 const OrderPickUp = () => {
 
-    const [buttonEnabled, setButtonEnabled] = useState(true);
-    const [button2Enabled, setButton2Enabled] = useState(false);
+    const navigation = useNavigation()
+
 
     const list = [{ //populate from backend
         name: 'Bill Jones',
@@ -39,22 +39,12 @@ const OrderPickUp = () => {
     }]
 
     const handleDeliverFood = () => {
-        setButtonEnabled(false);
-        setButton2Enabled(true);
         showMessage({
             message: "Delivery has begun. Customers have been notified.",
             type: "info",
           });
         //updateOrderStage("Returning"); won't work until we setup auth
-    }
-
-    const handleArrival = () => {
-        setButton2Enabled(false);
-        showMessage({
-            message: "Customers have been notified that you've arrived!",
-            type: "success",
-          });
-        //updateOrderStage("Arrived"); won't work until we setup auth
+        navigation.navigate("DriverTracking")
     }
 
 
@@ -90,17 +80,11 @@ const OrderPickUp = () => {
         }
         </ScrollView>
         </View>
-    <TouchableOpacity disabled={!buttonEnabled} onPress={handleDeliverFood}>
-    <View style={[styles.button, {opacity: buttonEnabled ? 1 : 0.2}]}>
+    <TouchableOpacity onPress={handleDeliverFood}>
+    <View style={styles.button}>
       <Text style={styles.buttonText}>Deliver to Campus</Text>
     </View>
-    </TouchableOpacity>
-    <TouchableOpacity disabled={!button2Enabled} onPress={handleArrival}>
-    <View style={[styles.button, {opacity: button2Enabled ? 1 : 0.2}]}>
-      <Text style={styles.buttonText}>Arrived On Campus</Text>
-    </View>
-    </TouchableOpacity>
-    
+    </TouchableOpacity>    
       </View>
     
   )

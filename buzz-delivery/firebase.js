@@ -39,7 +39,9 @@ export async function createUser(email, password, driver, n, v) {
         name: n,
         venmo: v,
         rating: -1,
-        total_ratings: 0
+        total_ratings: 0,
+        latitude: 0,
+        longitude: 0
       })
     } else {
       await setDoc(doc(firestore, "customer", user_uid), {
@@ -77,6 +79,21 @@ export async function saveTripDetails(restaurantName, menuLink, dropLocation, es
   });
 
   return user_uid;
+}
+
+export async function updateLocation(lat, long) {
+  const user_doc = doc(firestore, "driver", auth.currentUser.uid);
+  const docRef = updateDoc(user_doc, {
+    latitude: lat,
+    longitude: long
+  });
+}
+
+export async function getLocation(driver_id) {
+  const document = await getDoc(doc(firestore, "driver", "fJFZ3Oh2DoVZiCoRkjZoBIoggm02")); //TODO: replace hardcoded driver id with param
+  var lat = document.data().latitude;
+  var long = document.data().longitude;
+  return [lat, long]
 }
 
 export async function userType() {
