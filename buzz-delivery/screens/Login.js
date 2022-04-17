@@ -21,9 +21,9 @@ const Login = () => {
     if (success) {
         var user_type = await userType();
         if (user_type == "driver") {
-            navigation.navigate("OrderPickUp");
+            navigation.navigate("DriverTracking");
         } else {
-            navigation.navigate("DriverDetail")
+            navigation.navigate("CustomerTracking")
         }
     }
   }
