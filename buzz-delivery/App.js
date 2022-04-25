@@ -5,13 +5,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OrderPickUp from './screens/OrderPickUp'
 import TripDetails from './screens/TripDetails'
 import RequestsPage  from './screens/RequestsPage';
-import DriverLocation from './screens/DriverLocation';
 import Login from './screens/Login';
 import FlashMessage from "react-native-flash-message";
 import AvailableDrivers from './screens/AvailableDrivers';
 import CompleteOrder from './screens/CompleteOrder';
 import DriverDetail from './screens/DriverDetail';
+import DriverTracking from './screens/DriverTracking';
 import SignUp from './screens/SignUp';
+import CustomerViewTracking from './screens/CustomerViewTracking';
 
 
 const Stack = createNativeStackNavigator();
@@ -32,6 +33,15 @@ export default function App() {
       <Stack.Screen name="Login" component={Login} options={{
           title: "Login",
         }}/> 
+      <Stack.Screen name="DriverTracking" component={DriverTracking} options={{
+          title: "DriverTracking",
+        }}/> 
+        <Stack.Screen name="DriverDetail" component={DriverDetail} options={{
+          title: "Driver Details",
+        }}/> 
+        <Stack.Screen name="CustomerTracking" component={CustomerViewTracking} options={{
+          title: "Driver Location",
+        }}/> 
         <Stack.Screen name="SignUp" component={SignUp} options={{
           title: "SignUp",
         }}/> 
@@ -43,9 +53,6 @@ export default function App() {
         }}/>
         <Stack.Screen name="OrderPickUp" component={OrderPickUp} options={{
           title: "Order Details",
-        }}/> 
-        <Stack.Screen name="DriverLocation" component={DriverLocation} options={{
-          title: "Driver Location",
         }}/> 
         <Stack.Screen name="AvailableDrivers" component={AvailableDrivers} options={{
           title: "Available Drivers",

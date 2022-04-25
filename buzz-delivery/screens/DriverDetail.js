@@ -9,6 +9,7 @@ import { shouldUseActivityState } from 'react-native-screens';
 
 
 const DriverDetail = () => {
+    const navigation = useNavigation()
 
     const driver = {
         name: 'Bill Jones',
@@ -31,6 +32,7 @@ const DriverDetail = () => {
             message: "Your order has been placed!",
             type: "info",
           });
+          navigation.navigate("CustomerTracking")
     }
 
 
