@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native'
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
 import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
 import { getLocation } from '../firebase';
@@ -111,4 +111,18 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 8,
-  },})
+  },
+  button: {
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor:'#f01d71',
+    marginTop:40
+},
+buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 16,
+    textAlign: 'center'
+}, })

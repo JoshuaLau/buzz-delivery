@@ -36,6 +36,7 @@ const DriverDetail = () => {
     }
 
 
+
   return (
         <View>
 
