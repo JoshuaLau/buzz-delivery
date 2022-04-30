@@ -152,6 +152,15 @@ export async function getOrders() {
   return orders;
 }
 
+export async function getVenmo(driver_id) {
+
+  var driver_doc = await getDoc(doc(firestore, "driver", driver_id));
+  
+  var driver = driver_doc.data();
+
+  return driver;
+}
+
 export async function updateLocation(lat, long) {
   const user_doc = doc(firestore, "driver", auth.currentUser.uid);
   const docRef = updateDoc(user_doc, {

@@ -34,7 +34,9 @@ function DriverDetail({ route }) {
                 message: "Your order has been placed!",
                 type: "info",
             });
-          navigation.navigate("CustomerTracking")
+            navigation.navigate("PaymentScreen", {
+                driver_id: driver.id
+              })
         } catch (error) {
             showMessage({
                 message: "Something went wrong when trying to place your order. Please try again." + error,
