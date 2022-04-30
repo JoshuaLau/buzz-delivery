@@ -5,9 +5,6 @@ import { useNavigation } from '@react-navigation/core'; // used to navigate from
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 
-
-
-
 const TripDetails = () => {
 
     const navigation = useNavigation()
