@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import * as firebase from "firebase/app";
-import { getFirestore, setDoc, doc, collection, arrayRemove, arrayUnion, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, setDoc, doc, collection, arrayRemove, arrayUnion, getDoc, updateDoc, getDocs } from 'firebase/firestore';
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -79,6 +79,19 @@ export async function saveTripDetails(restaurantName, menuLink, dropLocation, es
   });
 
   return user_uid;
+}
+
+export async function getAvailableDrivers() {
+
+  var tripSnapshot = await getDocs(collection(firestore, "trips"));
+
+  var trips = [];
+
+  tripSnapshot.forEach((doc) => {
+    trips.push({id: doc.id, ...doc.data()})
+  });
+
+  return trips;
 }
 
 export async function updateLocation(lat, long) {
