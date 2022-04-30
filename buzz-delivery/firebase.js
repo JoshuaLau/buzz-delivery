@@ -140,6 +140,17 @@ export async function getAvailableDrivers() {
   return trips;
 }
 
+export async function getOrders() {
+
+  var user_uid = auth.currentUser.uid;
+
+  var ongoing_order = await getDoc(doc(firestore, "ongoing_orders", user_uid));
+  
+  var orders = ongoing_order.data();
+
+  return orders;
+}
+
 export async function updateLocation(lat, long) {
   const user_doc = doc(firestore, "driver", auth.currentUser.uid);
   const docRef = updateDoc(user_doc, {
