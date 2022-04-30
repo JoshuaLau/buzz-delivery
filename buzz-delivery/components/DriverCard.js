@@ -1,9 +1,18 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import DriverDetail from '../screens/DriverDetail';
+
 
 export default function DriverCard({driver}) {
+  const navigation = useNavigation();
+
+  function move() {
+    navigation.navigate("DriverDetail", {driver_name: driver.name, driver_restaurant: driver.restaurant, driver_time: driver.estimatedTime, driver_location: driver.dropoffLocation})
+  }
+
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity onPress={move} style={styles.card}>
         <View>
             <Text> Restaurant: {driver.restaurant} </Text>
             <Text> Driver: {driver.name}</Text>

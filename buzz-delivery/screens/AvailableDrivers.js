@@ -27,7 +27,8 @@ const AvailableDrivers = () => {
                         restaurant: detail.restaurant_name,
                         name: detail.driver,
                         dropoffLocation: detail.drop_location,
-                        estimatedTime: detail.estimated_time
+                        estimatedTime: detail.estimated_time,
+                        id: detail.id
                     }
                 )
             })

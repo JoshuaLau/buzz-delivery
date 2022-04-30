@@ -8,14 +8,14 @@ import { shouldUseActivityState } from 'react-native-screens';
 
 
 
-const DriverDetail = () => {
+function DriverDetail({ route }) {
     const navigation = useNavigation()
 
     const driver = {
-        name: 'Bill Jones',
-        restaurant: 'Cafe Agora',
-        estimatedTime: '12:30pm',
-        dropoffLocation: 'West Village'
+        name: route.params.driver_name,
+        restaurant: route.params.driver_restaurant,
+        estimatedTime: route.params.driver_time,
+        dropoffLocation: route.params.driver_location
     }
 
     const [inputField, setInputField] = useState({
