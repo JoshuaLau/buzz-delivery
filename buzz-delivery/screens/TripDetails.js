@@ -30,7 +30,7 @@ const TripDetails = () => {
                 message: "Trip details have been posted! Customers can now request an order.",
                 type: "info",
               });
-              navigation.navigate("OrderPickUp");
+              navigation.navigate("RequestsPage");
         } catch (error) {
             showMessage({
                 message: "There was something wrong with your information. Please try again." + error,
