@@ -18,7 +18,6 @@ function PaymentScreen({ route }) {
           });
           // TODO: change state of payment of driver screens
     }
-    // TODO: replace this link with the driver's Venmo link
     const driver_id = route.params.driver_id
     
 
