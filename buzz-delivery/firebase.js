@@ -35,10 +35,10 @@ const firestore = getFirestore();
 var user_uid;
 
 // state of orders
-const ACCEPTING = "ACCEPTING";
-const ORDER_PLACED = "ORDER_PLACED";
-const RETURNING = "RETURNING";
-const DELIVERED = "DELIVERED";
+export const ACCEPTING = "ACCEPTING";
+export const ORDER_PLACED = "ORDER_PLACED";
+export const RETURNING = "RETURNING";
+export const DELIVERED = "DELIVERED";
 
 export async function createUser(email, password, driver, n, v) {
   createUserWithEmailAndPassword(auth, email, password).then(async function(user_log) {
@@ -194,22 +194,21 @@ export async function signIn(email, password) {
   });
 
   user_uid = auth.currentUser.uid;
+  // var type = userType();
+  // if (type == "driver") {
+  //   const user_doc = doc(firestore, "driver", auth.currentUser.uid);
+  //   const docRef = updateDoc(user_doc, {
+  //   pushtoken: pushToken
+  //   });
+  // } else {
+  //   const user_doc = doc(firestore, "customer", auth.currentUser.uid);
+  //   const docRef = updateDoc(user_doc, {
+  //   pushtoken: pushToken
+  //   });
+  // }
 
   return userCredentials;
 }
-
-// export async function food_request(order, driver_id, price) {
-//   const user_doc = doc(firestore, "ongoing_orders", driver_id);
-//   const orders_map = new Map([
-//     ["customer_id" , auth.currentUser.uid],
-//     ["order", order],
-//     ["price", price]
-
-//   ])
-//   const docRef = updateDoc(user_doc, {
-//     orders: arrayUnion(orders_map)
-//   });
-// }
 
 export async function updateOrderStage(status) {
   const user_doc = doc(firestore, "ongoing_orders", auth.currentUser.uid);
@@ -217,20 +216,27 @@ export async function updateOrderStage(status) {
     stage: status
   });
   const document = await getDoc(doc(firestore, "ongoing_orders", auth.currentUser.uid));
-  var customers = document.data().customer_id;
-  // var title = ""; uncomment when update order stage begins to work
-  // var text = "";
-  // if (status == "Returning") {
-  //   title = "Returning to Campus";
-  //   text = "Your food has been picked up and is being returned to campus!";
-  // } else if (status = "Arrived") {
-  //   title="Arrived to Campus";
-  //   text = "Your food is at the designated dropoff location!";
-  // }
 
-  // for (let i=0; i < customers.length; i++) {
-  //   const cust_doc = await getDoc(doc(firestore, "customer", customers[i]));
-  //   sendPushNotification(cust_doc.data().pushtoken, title, text, "")
-  // }
+  var customers = document.data().customer_ids;
+
+  var title = "";
+  var text = "";
+  if (status == RETURNING) {
+    title = "Returning to Campus";
+    text = "Your food has been picked up and is being returned to campus!";
+  } else if (status == DELIVERED) {
+    title="Arrived to Campus";
+    text = "Your food is at the designated dropoff location!";
+  } else if (status == ORDER_PLACED) {
+    title = "Order Placed";
+    text = "Your driver has placed your order at the restaurant!";
+  }
+
+  for (let i=0; i < customers.length; i++) {
+    console.log(title)
+    console.log(text)
+    const cust_doc = await getDoc(doc(firestore, "customer", customers[i]));
+    sendPushNotification(cust_doc.data().pushtoken, title, text, "")
+  }
 }
 
