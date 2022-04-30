@@ -57,7 +57,7 @@ function PaymentScreen({ route }) {
                 value={supportedUrl}
             />
             <View>
-            <OpenUrlButton url={supportedUrl}>Open Supported Url</OpenUrlButton>
+            <OpenUrlButton url={supportedUrl}>Driver's Venmo</OpenUrlButton>
             </View>
             <TouchableOpacity onPress={handlePayment}>
             <View style={styles.button}>
