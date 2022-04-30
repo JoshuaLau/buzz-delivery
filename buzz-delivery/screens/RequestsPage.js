@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import { getOrders, ORDER_PLACED, updateOrderStage } from '../firebase';
 
 const RequestsPage = () => {
 
@@ -38,6 +39,28 @@ const RequestsPage = () => {
         order: 'Chicken Nuggets'
     }]
 
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        var orders_temp = [];
+        var customers = [];
+        var orders_field = [];
+        getOrders().then(details => {
+          customers = details['customers'];
+          orders_field = details['orders'];
+  
+          for (var i = 0; i < customers.length; i++) {
+            orders_temp.push({
+              name: customers[i],
+              order: orders_field[i]['order'],
+              price: orders_field[i]['price']
+            })
+          }
+          
+          setOrders(orders_temp);
+      });
+      }, []);
+
     const handleRefresh = () => {
         setRefreshed(true);
         showMessage({
@@ -49,6 +72,7 @@ const RequestsPage = () => {
     const handleArrival = () => {
         setButtonEnabled(false);
         setButton2Enabled(false);
+        updateOrderStage(ORDER_PLACED);
         showMessage({
             message: "Customers have been notified that you arrived at the restaurant.",
             type: "info",
@@ -60,7 +84,7 @@ const RequestsPage = () => {
     <View>
         <Text style={styles.titleText}>Order Summary</Text>
         {
-            refreshed ? list.map((item, index) => {
+            refreshed ? orders.map((item, index) => {
                 return <ListItem
                 Component={TouchableHighlight}
                 containerStyle={{}}
@@ -74,6 +98,9 @@ const RequestsPage = () => {
                 </ListItem.Title>
                 <ListItem.Subtitle>
                     <Text>{item.order}</Text>
+                </ListItem.Subtitle>
+                <ListItem.Subtitle>
+                    <Text>{item.price}</Text>
                 </ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
