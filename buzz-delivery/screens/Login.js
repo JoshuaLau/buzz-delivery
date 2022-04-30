@@ -23,7 +23,7 @@ const Login = () => {
         if (user_type == "driver") {
             navigation.navigate("TripDetails");
         } else {
-            navigation.navigate("AvailableDrivers")
+            navigation.navigate("AvailableDrivers");
         }
     }
   }
