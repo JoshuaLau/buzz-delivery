@@ -7,6 +7,7 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
   } from 'firebase/auth';
+import { pushToken, sendPushNotification } from "./App";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -41,14 +42,16 @@ export async function createUser(email, password, driver, n, v) {
         rating: -1,
         total_ratings: 0,
         latitude: 0,
-        longitude: 0
+        longitude: 0,
+        pushtoken: pushToken,
       })
     } else {
       await setDoc(doc(firestore, "customer", user_uid), {
         name: n,
         venmo: v,
         rating: -1,
-        total_ratings: 0
+        total_ratings: 0,
+        pushtoken: pushToken,
       })
     }
   });
@@ -149,5 +152,21 @@ export async function updateOrderStage(status) {
   const docRef = updateDoc(user_doc, {
     stage: status
   });
+  const document = await getDoc(doc(firestore, "ongoing_orders", auth.currentUser.uid));
+  var customers = document.data().customer_id;
+  // var title = ""; uncomment when update order stage begins to work
+  // var text = "";
+  // if (status == "Returning") {
+  //   title = "Returning to Campus";
+  //   text = "Your food has been picked up and is being returned to campus!";
+  // } else if (status = "Arrived") {
+  //   title="Arrived to Campus";
+  //   text = "Your food is at the designated dropoff location!";
+  // }
+
+  // for (let i=0; i < customers.length; i++) {
+  //   const cust_doc = await getDoc(doc(firestore, "customer", customers[i]));
+  //   sendPushNotification(cust_doc.data().pushtoken, title, text, "")
+  // }
 }
 

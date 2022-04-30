@@ -6,6 +6,7 @@ import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { updateOrderStage } from '../firebase';
 import { render } from 'react-dom';
+import { sendPushNotification } from '../App';
 import Card from '../components/card';
 
 
