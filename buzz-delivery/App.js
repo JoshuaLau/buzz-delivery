@@ -14,6 +14,7 @@ import DriverDetail from './screens/DriverDetail';
 import DriverTracking from './screens/DriverTracking';
 import SignUp from './screens/SignUp';
 import CustomerViewTracking from './screens/CustomerViewTracking';
+import PaymentScreen from './screens/PaymentScreen';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 
@@ -94,6 +95,9 @@ export default function App() {
         <Stack.Screen name="AvailableDrivers" component={AvailableDrivers} options={{
           title: "Available Drivers",
         }}/> 
+        <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{
+          title: "Payment Screen",
+        }}/>
       </Stack.Navigator>
       <FlashMessage position="top" />
     </NavigationContainer>
