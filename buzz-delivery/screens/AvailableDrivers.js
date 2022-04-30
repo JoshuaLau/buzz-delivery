@@ -5,54 +5,40 @@ import { useNavigation } from '@react-navigation/core'; // used to navigate from
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import DriverCard from '../components/DriverCard';
+import { getAvailableDrivers } from '../firebase';
 
 // retrieve active drivers from FireBase
-const activeDrivers = [
-    {
-        name: 'Bill Jones',
-        restaurant: 'Cafe Agora',
-        estimatedTime: '12:30pm',
-        dropoffLocation: 'West Village'
-    },
-    {
-        name: 'Ted Powell',
-        restaurant: 'Subway',
-        estimatedTime: '12:45pm',
-        dropoffLocation: 'North Avenue'
-    },
-    {
-        name: 'Lindsey Green',
-        restaurant: 'Mukja',
-        estimatedTime: '12:45pm',
-        dropoffLocation: 'CULC'
-    },
-    {
-        name: 'Henry Lopez',
-        restaurant: 'Ding Tea',
-        estimatedTime: '1:00pm',
-        dropoffLocation: 'Scheller'
-    },
-    {
-        name: 'Carson Lloyd',
-        restaurant: 'Senor Patron',
-        estimatedTime: '1:30pm',
-        dropoffLocation: 'West Village'
-    },
-    {
-        name: 'Randall Solomon',
-        restaurant: 'Ecco Midtown',
-        estimatedTime: '2:00pm',
-        dropoffLocation: 'CULC'
-    },
 
-]
+async function getDrivers() {
+    var availableDriversWithDetails = await getAvailableDrivers();
+    return availableDriversWithDetails;
+}
 
 const AvailableDrivers = () => {
+
+    const [availableDrivers, setAvailableDrivers] = useState([]);
+
+    useEffect(() => {
+        var drivers = [];
+        getDrivers().then(details => {
+            details.forEach(detail => {
+                drivers.push(
+                    {
+                        restaurant: detail.restaurant_name,
+                        name: detail.driver,
+                        dropoffLocation: detail.drop_location,
+                        estimatedTime: detail.estimated_time
+                    }
+                )
+            })
+            setAvailableDrivers(drivers);
+        });
+    }, []);
 
     return(
         <View>
             <Text style={styles.titleText}> Available Drivers </Text>
-            { activeDrivers.map(driver => (
+            { availableDrivers.map(driver => (
                 <DriverCard driver = {driver}></DriverCard>
             )) }
         </View>
