@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native"
 import * as TaskManager from "expo-task-manager"
 import * as Location from "expo-location"
-import { updateLocation, updateOrderStage } from "../firebase"
+import { updateLocation, updateOrderStage, DELIVERED } from "../firebase"
 import { showMessage } from "react-native-flash-message"
 
 //much borrowed from https://chafikgharbi.com/expo-location-tracking/
@@ -36,12 +36,12 @@ export default function DriverTracking() {
       console.log("stopping")
     }
 
-  const handleArrival = () => {
+  const handleArrival = async () => {
     showMessage({
         message: "Customers have been notified that you've arrived!",
         type: "success",
       });
-    //updateOrderStage("Arrived"); 
+    await updateOrderStage(DELIVERED);
 }
 
 

@@ -8,13 +8,16 @@ import { updateOrderStage } from '../firebase';
 import { render } from 'react-dom';
 import { sendPushNotification } from '../App';
 import Card from '../components/card';
-import { getOrders, RETURNING } from '../firebase';
+import { getOrders, RETURNING, ORDER_PLACED } from '../firebase';
 
 const OrderPickUp = () => {
 
     const navigation = useNavigation()
 
     const [orders, setOrders] = useState([]);
+
+    const [buttonEnabled, setButtonEnabled] = useState(true);
+    const [button2Enabled, setButton2Enabled] = useState(false);
 
     useEffect(() => {
       var orders_temp = [];
@@ -36,12 +39,22 @@ const OrderPickUp = () => {
     });
     }, []);
 
-    const handleDeliverFood = () => {
+    const handleOrderPlaced = async () => {
+      setButtonEnabled(false);
+      setButton2Enabled(true);
+      showMessage({
+          message: "Order has been placed. Customers have been notified",
+          type: "info",
+        });
+      await updateOrderStage(ORDER_PLACED);
+  }
+
+    const handleDeliverFood = async () => {
         showMessage({
             message: "Delivery has begun. Customers have been notified.",
             type: "info",
           });
-        updateOrderStage(RETURNING);
+        await updateOrderStage(RETURNING);
         navigation.navigate("DriverTracking")
     }
 
@@ -81,8 +94,13 @@ const OrderPickUp = () => {
         }
         </ScrollView>
         </View>
-    <TouchableOpacity onPress={handleDeliverFood}>
-    <View style={styles.button}>
+      <TouchableOpacity disabled={!buttonEnabled} onPress={handleOrderPlaced}>
+    <View style={[styles.button, {opacity: buttonEnabled ? 1 : 0.2}]}>
+      <Text style={styles.buttonText}>Notify Order Placed</Text>
+    </View>
+    </TouchableOpacity>  
+    <TouchableOpacity disabled={!button2Enabled} onPress={handleDeliverFood}>
+    <View style={[styles.button, {opacity: button2Enabled ? 1 : 0.2}]}>
       <Text style={styles.buttonText}>Deliver to Campus</Text>
     </View>
     </TouchableOpacity>    
