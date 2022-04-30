@@ -210,6 +210,11 @@ export async function signIn(email, password) {
   return userCredentials;
 }
 
+export async function getOrderStatus(driver_id) {
+  const document = await getDoc(doc(firestore, "ongoing_orders", driver_id));
+  return document.data().stage;
+}
+
 export async function updateOrderStage(status) {
   const user_doc = doc(firestore, "ongoing_orders", auth.currentUser.uid);
   const docRef = updateDoc(user_doc, {

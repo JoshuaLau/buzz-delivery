@@ -72,7 +72,10 @@ export default function App() {
           title: "Login",
         }}/> 
       <Stack.Screen name="DriverTracking" component={DriverTracking} options={{
-          title: "DriverTracking",
+          title: "Driver Tracking",
+        }}/> 
+        <Stack.Screen name="CompleteOrder" component={CompleteOrder} options={{
+          title: "Order Completed",
         }}/> 
         <Stack.Screen name="DriverDetail" component={DriverDetail} options={{
           title: "Driver Details",

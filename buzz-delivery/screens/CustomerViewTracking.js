@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/core';
 import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
-import { getLocation } from '../firebase';
+import { getLocation, getOrderStatus, DELIVERED } from '../firebase';
 
 
 
-const CustomerViewTracking = () => {
+function CustomerViewTracking({route}) {
     const mapRef = useRef()
     const markerRef = useRef()
+    const navigation = useNavigation()
     
 
     const [state, setState] = useState({latitude: 33.7756, longitude: -84.3963,
@@ -56,6 +58,9 @@ const CustomerViewTracking = () => {
                         longitudeDelta: 0.0421
             
                     })})
+                if (getOrderStatus(route.params.id) == DELIVERED) {
+                    navigation.navigate("CompleteOrder")
+                }
             }, 5000)
         }
         updateLoc()
