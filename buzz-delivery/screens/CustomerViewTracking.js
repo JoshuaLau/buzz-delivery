@@ -64,10 +64,9 @@ function CustomerViewTracking({route}) {
         
     })
 
-    useEffect(() => {
-        console.log(route.params.id)
-        if (getOrderStatus(route.params.id) == DELIVERED) {
-            console.log('goher')
+    useEffect(async () => {
+        var status = await getOrderStatus(route.params.id);
+        if (status == DELIVERED) {
             navigation.navigate("CompleteOrder")
         }
     })
