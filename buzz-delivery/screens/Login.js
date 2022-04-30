@@ -21,7 +21,7 @@ const Login = () => {
     if (success) {
         var user_type = await userType();
         if (user_type == "driver") {
-            navigation.navigate("TripDetails");
+            navigation.navigate("DriverTracking");
         } else {
             navigation.navigate("AvailableDrivers");
         }

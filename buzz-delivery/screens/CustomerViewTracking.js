@@ -58,13 +58,18 @@ function CustomerViewTracking({route}) {
                         longitudeDelta: 0.0421
             
                     })})
-                if (getOrderStatus(route.params.id) == DELIVERED) {
-                    navigation.navigate("CompleteOrder")
-                }
             }, 5000)
         }
         updateLoc()
         
+    })
+
+    useEffect(() => {
+        console.log(route.params.id)
+        if (getOrderStatus(route.params.id) == DELIVERED) {
+            console.log('goher')
+            navigation.navigate("CompleteOrder")
+        }
     })
 
   return (
