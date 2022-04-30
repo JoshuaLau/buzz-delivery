@@ -8,36 +8,57 @@ import { updateOrderStage } from '../firebase';
 import { render } from 'react-dom';
 import { sendPushNotification } from '../App';
 import Card from '../components/card';
-
+import { getOrders } from '../firebase';
 
 const OrderPickUp = () => {
 
     const navigation = useNavigation()
 
+    // const orders = [{ //populate from backend
+    //     name: 'Bill Jones',
+    //     order: 'Onion rings'
+    // }, {
+    //     name: 'John Smith',
+    //     order: 'fries'
+    // }, 
+    // {
+    //     name: 'Steve Miller',
+    //     order: 'fries'
+    // },
+    // {
+    //     name: 'Rick Sanchez',
+    //     order: 'Cheeseburger with Extra Pickles'
+    // },
+    // {
+    //     name: 'Morty Smith',
+    //     order: 'Milkshake, Apple Pie'
+    // }, 
+    // {
+    //     name: 'Jerry Smith',
+    //     order: 'Chicken Nuggets'
+    // }]
 
-    const list = [{ //populate from backend
-        name: 'Bill Jones',
-        order: 'Onion rings'
-    }, {
-        name: 'John Smith',
-        order: 'fries'
-    }, 
-    {
-        name: 'Steve Miller',
-        order: 'fries'
-    },
-    {
-        name: 'Rick Sanchez',
-        order: 'Cheeseburger with Extra Pickles'
-    },
-    {
-        name: 'Morty Smith',
-        order: 'Milkshake, Apple Pie'
-    }, 
-    {
-        name: 'Jerry Smith',
-        order: 'Chicken Nuggets'
-    }]
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+      var orders_temp = [];
+      var customers = [];
+      var orders_field = [];
+      getOrders().then(details => {
+        customers = details['customers'];
+        orders_field = details['orders'];
+
+        for (var i = 0; i < customers.length; i++) {
+          orders_temp.push({
+            name: customers[i],
+            order: orders_field[i]['order'],
+            price: orders_field[i]['price']
+          })
+        }
+        
+        setOrders(orders_temp);
+    });
+    }, []);
 
     const handleDeliverFood = () => {
         showMessage({
@@ -60,7 +81,7 @@ const OrderPickUp = () => {
           <View style={{maxHeight: "40%"}}>
           <ScrollView>
         {
-           list.map((item, index) => {
+           orders.map((item, index) => {
             return <ListItem
             Component={Card}
             containerStyle={{}}
@@ -74,6 +95,9 @@ const OrderPickUp = () => {
               </ListItem.Title>
               <ListItem.Subtitle>
                 <Text>{item.order}</Text>
+              </ListItem.Subtitle>
+              <ListItem.Subtitle>
+                <Text>{item.price}</Text>
               </ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
