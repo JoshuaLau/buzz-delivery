@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/core'; // used to navigate from
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { shouldUseActivityState } from 'react-native-screens';
+import { placeOrder } from '../firebase';
 
 
 
@@ -18,21 +19,30 @@ const DriverDetail = () => {
         dropoffLocation: 'West Village'
     }
 
-    const [inputField, setInputField] = useState({
-        orderForm: '',
-        price: ''
-    })
+    const [order, setOrder] = useState('')
+    const [price, setPrice] = useState('')
 
     const inputHandler = (e) => {
         setInputField( {[e.target.name]: e.target.value})
     }
 
+    const driver_id = "BV2owHEjzqTE8B1EEyUt05l9VBX2" // TODO: update to not hardcode after available drivers screen links to this one, giving info on which driver it is
+
     const handleOrderConfirmation = () => {
-        showMessage({
-            message: "Your order has been placed!",
-            type: "info",
-          });
+        try {
+            placeOrder(order, price, driver_id)
+            showMessage({
+                message: "Your order has been placed!",
+                type: "info",
+            });
           navigation.navigate("CustomerTracking")
+        } catch (error) {
+            showMessage({
+                message: "Something went wrong when trying to place your order. Please try again." + error,
+                type: "error",
+              });
+              return;
+        }
     }
 
 
@@ -58,16 +68,15 @@ const DriverDetail = () => {
             <Text style={styles.promptText}> Order </Text>
             <TextInput
             style = {styles.input}
-            value = {inputField.orderForm}
-            onChange = {inputHandler}>
+            value = {order}
+            onChangeText = {text => setOrder(text)}>
             </TextInput>
 
             <Text style={styles.promptText}> Total Price </Text>
             <TextInput
             style = {styles.input}
-            type = "number"
-            value = {inputField.price}
-            onChange = {inputHandler}>
+            value = {price}
+            onChangeText = {text => setPrice(text)}>
             </TextInput>
 
             <TouchableOpacity onPress={handleOrderConfirmation}>

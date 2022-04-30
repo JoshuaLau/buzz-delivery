@@ -8,6 +8,7 @@ import {
     onAuthStateChanged,
   } from 'firebase/auth';
 import { pushToken, sendPushNotification } from "./App";
+import { isAdmin } from "@firebase/util";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,6 +33,12 @@ const auth = getAuth(app);
 const firestore = getFirestore();
 
 var user_uid;
+
+// state of orders
+const ACCEPTING = "ACCEPTING";
+const ORDER_PLACED = "ORDER_PLACED";
+const DELIVERED = "DELIVERED";
+
 export async function createUser(email, password, driver, n, v) {
   createUserWithEmailAndPassword(auth, email, password).then(async function(user_log) {
     user_uid = user_log.user.uid;
@@ -79,6 +86,42 @@ export async function saveTripDetails(restaurantName, menuLink, dropLocation, es
     drop_location: dropLocation,
     estimated_time: estimatedTime,
     max_requests: maxRequests
+  });
+
+  await setDoc(doc(firestore, "ongoing_orders", user_uid), {
+    driver_id: user_uid,
+    customers: [],
+    customer_ids: [],
+    destination: dropLocation,
+    orders: [],
+    restaurant: restaurantName,
+    stage: ACCEPTING
+  });
+
+  return user_uid;
+}
+
+export async function placeOrder(order, price, driver_id) {
+  user_uid = auth.currentUser.uid;
+
+  price = parseFloat(price);
+
+  var customerDoc = await getDoc(doc(firestore, "customer", user_uid));
+
+  var customer_name;
+  if (!customerDoc.exists()) {
+    customer_name = "TEMP";
+  } else {
+    customer_name = customerDoc.get("name");
+  }
+  
+  await updateDoc(doc(firestore, "ongoing_orders", driver_id), {
+    customer_ids: arrayUnion(user_uid),
+    customers: arrayUnion(customer_name),
+    orders: arrayUnion({
+      order: order,
+      price: price
+    })
   });
 
   return user_uid;
