@@ -8,7 +8,13 @@ export default function DriverCard({driver}) {
   const navigation = useNavigation();
 
   function move() {
-    navigation.navigate("DriverDetail", {driver_name: driver.name, driver_restaurant: driver.restaurant, driver_time: driver.estimatedTime, driver_location: driver.dropoffLocation})
+    navigation.navigate("DriverDetail", {
+      driver_name: driver.name,
+      driver_restaurant: driver.restaurant,
+      driver_time: driver.estimatedTime,
+      driver_location: driver.dropoffLocation,
+      driver_id: driver.id
+    })
   }
 
   return (

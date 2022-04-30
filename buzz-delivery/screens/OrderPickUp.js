@@ -8,35 +8,11 @@ import { updateOrderStage } from '../firebase';
 import { render } from 'react-dom';
 import { sendPushNotification } from '../App';
 import Card from '../components/card';
-import { getOrders } from '../firebase';
+import { getOrders, RETURNING } from '../firebase';
 
 const OrderPickUp = () => {
 
     const navigation = useNavigation()
-
-    // const orders = [{ //populate from backend
-    //     name: 'Bill Jones',
-    //     order: 'Onion rings'
-    // }, {
-    //     name: 'John Smith',
-    //     order: 'fries'
-    // }, 
-    // {
-    //     name: 'Steve Miller',
-    //     order: 'fries'
-    // },
-    // {
-    //     name: 'Rick Sanchez',
-    //     order: 'Cheeseburger with Extra Pickles'
-    // },
-    // {
-    //     name: 'Morty Smith',
-    //     order: 'Milkshake, Apple Pie'
-    // }, 
-    // {
-    //     name: 'Jerry Smith',
-    //     order: 'Chicken Nuggets'
-    // }]
 
     const [orders, setOrders] = useState([]);
 
@@ -65,7 +41,7 @@ const OrderPickUp = () => {
             message: "Delivery has begun. Customers have been notified.",
             type: "info",
           });
-        //updateOrderStage("Returning"); won't work until we setup auth
+        updateOrderStage(RETURNING);
         navigation.navigate("DriverTracking")
     }
 

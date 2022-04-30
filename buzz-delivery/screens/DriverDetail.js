@@ -16,7 +16,8 @@ function DriverDetail({ route }) {
         name: route.params.driver_name,
         restaurant: route.params.driver_restaurant,
         estimatedTime: route.params.driver_time,
-        dropoffLocation: route.params.driver_location
+        dropoffLocation: route.params.driver_location,
+        id: route.params.driver_id
     }
 
     const [order, setOrder] = useState('')
@@ -26,11 +27,9 @@ function DriverDetail({ route }) {
         setInputField( {[e.target.name]: e.target.value})
     }
 
-    const driver_id = "BV2owHEjzqTE8B1EEyUt05l9VBX2" // TODO: update to not hardcode after available drivers screen links to this one, giving info on which driver it is
-
     const handleOrderConfirmation = () => {
         try {
-            placeOrder(order, price, driver_id)
+            placeOrder(order, price, driver.id)
             showMessage({
                 message: "Your order has been placed!",
                 type: "info",

@@ -37,6 +37,7 @@ var user_uid;
 // state of orders
 const ACCEPTING = "ACCEPTING";
 const ORDER_PLACED = "ORDER_PLACED";
+const RETURNING = "RETURNING";
 const DELIVERED = "DELIVERED";
 
 export async function createUser(email, password, driver, n, v) {
