@@ -5,8 +5,9 @@ import { useNavigation } from '@react-navigation/core'; // used to navigate from
 import { List, ListItem, Icon, Button } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import QRCode from 'react-native-qrcode-svg';
+import { getVenmo } from '../firebase';
 
-const PaymentScreen = () => {
+function PaymentScreen({ route }) {
     const navigation = useNavigation()
 
     const handlePayment = () => {
@@ -18,7 +19,18 @@ const PaymentScreen = () => {
           // TODO: change state of payment of driver screens
     }
     // TODO: replace this link with the driver's Venmo link
-    const supportedUrl = "https://google.com";
+    const driver_id = route.params.driver_id
+    
+
+    const [venmo, setVenmo] = useState('');
+
+    useEffect(() => {
+        getVenmo(driver_id).then(details => {
+            setVenmo(details['venmo']);
+        });
+    }, []);
+
+    const supportedUrl = "https://account.venmo.com/u/" + venmo;
 
     const OpenUrlButton = ({url, children}) => {
         const handlePress = useCallback(async () => {
