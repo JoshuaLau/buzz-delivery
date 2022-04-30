@@ -15,29 +15,6 @@ const RequestsPage = () => {
     const [button2Enabled, setButton2Enabled] = useState(true);
 
     const emptyList = [];
-    const list = [{ //populate from backend
-        name: 'Bill Jones',
-        order: 'Onion rings'
-    }, {
-        name: 'John Smith',
-        order: 'fries'
-    }, 
-    {
-        name: 'Steve Miller',
-        order: 'fries'
-    },
-    {
-        name: 'Rick Sanchez',
-        order: 'Cheeseburger with Extra Pickles'
-    },
-    {
-        name: 'Morty Smith',
-        order: 'Milkshake, Apple Pie'
-    }, 
-    {
-        name: 'Jerry Smith',
-        order: 'Chicken Nuggets'
-    }]
 
     const [orders, setOrders] = useState([]);
 
