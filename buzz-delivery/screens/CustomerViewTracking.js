@@ -48,7 +48,7 @@ function CustomerViewTracking({route}) {
     useEffect(() => {
         async function updateLoc() {
             const interval = setInterval(async () => {
-                var position = await getLocation(null) //TODO: get specific driver_id and pass in here
+                var position = await getLocation(route.params.id)
                 animate(position[0], position[1])
                 setState({latitude: position[0], longitude: position[1],
                     coordinate: new AnimatedRegion({

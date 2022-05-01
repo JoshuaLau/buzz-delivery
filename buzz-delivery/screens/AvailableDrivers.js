@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
@@ -37,12 +37,12 @@ const AvailableDrivers = () => {
     }, []);
 
     return(
-        <View>
+        <ScrollView>
             <Text style={styles.titleText}> Available Drivers </Text>
             { availableDrivers.map(driver => (
                 <DriverCard driver = {driver}></DriverCard>
             )) }
-        </View>
+        </ScrollView>
     );
 }
 
