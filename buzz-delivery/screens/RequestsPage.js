@@ -6,7 +6,7 @@ import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { getOrders, ORDER_PLACED, updateOrderStage } from '../firebase';
 
-const RequestsPage = () => {
+function RequestsPage({ route }) {
 
     const navigation = useNavigation()
 
@@ -18,28 +18,48 @@ const RequestsPage = () => {
 
     const [orders, setOrders] = useState([]);
 
+    const driver_id = route.params.driver_id
     useEffect(() => {
         var orders_temp = [];
         var customers = [];
         var orders_field = [];
-        getOrders().then(details => {
-          customers = details['customers'];
-          orders_field = details['orders'];
-  
-          for (var i = 0; i < customers.length; i++) {
-            orders_temp.push({
-              name: customers[i],
-              order: orders_field[i]['order'],
-              price: orders_field[i]['price']
-            })
-          }
-          
-          setOrders(orders_temp);
+        getOrders(driver_id).then(details => {
+            console.log(details);
+            customers = details['customers'];
+            orders_field = details['orders'];
+    
+            for (var i = 0; i < customers.length; i++) {
+                orders_temp.push({
+                name: customers[i],
+                order: orders_field[i]['order'],
+                price: orders_field[i]['price']
+                })
+            }
+            
+            setOrders(orders_temp);
       });
       });
 
     const handleRefresh = () => {
         setRefreshed(true);
+            var orders_temp = [];
+            var customers = [];
+            var orders_field = [];
+            getOrders(driver_id).then(details => {
+                console.log(details);
+              customers = details['customers'];
+              orders_field = details['orders'];
+      
+              for (var i = 0; i < customers.length; i++) {
+                orders_temp.push({
+                  name: customers[i],
+                  order: orders_field[i]['order'],
+                  price: orders_field[i]['price']
+                })
+              }
+              
+              setOrders(orders_temp);
+          });
         showMessage({
             message: "Fetching new orders.",
             type: "info",

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
-import { saveTripDetails } from '../firebase';
+import { auth, saveTripDetails } from '../firebase';
 
 
 
@@ -23,14 +23,20 @@ const TripDetails = () => {
         setInputField( {[e.target.name]: e.target.value})
     }
 
+    const [driver_id, setId] = useState('');
+
     const handleTripConfirmation = () => {
         try {
+            var driver_id = auth.currentUser.uid;
             saveTripDetails(restaurantName, menuLink, dropLocation, estimatedTime, maxRequests);
             showMessage({
                 message: "Trip details have been posted! Customers can now request an order.",
                 type: "info",
               });
-              navigation.navigate("RequestsPage");
+              
+              navigation.navigate("RequestsPage", {
+                  driver_id: driver_id
+              });
         } catch (error) {
             showMessage({
                 message: "There was something wrong with your information. Please try again." + error,

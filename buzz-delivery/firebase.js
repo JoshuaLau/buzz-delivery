@@ -28,7 +28,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const firestore = getFirestore();
 
@@ -141,11 +141,13 @@ export async function getAvailableDrivers() {
   return trips;
 }
 
-export async function getOrders() {
+export async function getOrders(driver_id) {
 
-  var user_uid = auth.currentUser.uid;
+  if (driver_id == undefined) {
+    driver_id = auth.currentUser.uid;
+  }
 
-  var ongoing_order = await getDoc(doc(firestore, "ongoing_orders", user_uid));
+  var ongoing_order = await getDoc(doc(firestore, "ongoing_orders", driver_id));
   
   var orders = ongoing_order.data();
 
@@ -179,7 +181,6 @@ export async function getLocation(driver_id) {
 export async function userType() {
   var docSnap = await getDoc(doc(firestore, "customer", auth.currentUser.uid));
   if (!docSnap.exists()) {
-    console.log("gothere")
     return "driver";
   };
   return "customer";
