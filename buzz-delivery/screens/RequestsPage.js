@@ -36,7 +36,7 @@ const RequestsPage = () => {
           
           setOrders(orders_temp);
       });
-      }, []);
+      });
 
     const handleRefresh = () => {
         setRefreshed(true);

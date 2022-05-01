@@ -11,7 +11,7 @@ function PaymentScreen({ route }) {
     const navigation = useNavigation()
 
     const handlePayment = () => {
-        navigation.navigate("CustomerTracking");
+        navigation.navigate("CustomerTracking", {id: route.params.driver_id});
         showMessage({
             message: "The driver has been notified of your payment!",
             type: "success",

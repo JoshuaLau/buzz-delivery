@@ -170,7 +170,7 @@ export async function updateLocation(lat, long) {
 }
 
 export async function getLocation(driver_id) {
-  const document = await getDoc(doc(firestore, "driver", "fJFZ3Oh2DoVZiCoRkjZoBIoggm02")); //TODO: replace hardcoded driver id with param
+  const document = await getDoc(doc(firestore, "driver", driver_id));
   var lat = document.data().latitude;
   var long = document.data().longitude;
   return [lat, long]
@@ -208,6 +208,11 @@ export async function signIn(email, password) {
   // }
 
   return userCredentials;
+}
+
+export async function getOrderStatus(driver_id) {
+  const document = await getDoc(doc(firestore, "ongoing_orders", driver_id));
+  return document.data().stage;
 }
 
 export async function updateOrderStage(status) {

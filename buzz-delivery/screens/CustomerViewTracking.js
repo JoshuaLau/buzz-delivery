@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/core';
 import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
-import { getLocation } from '../firebase';
+import { getLocation, getOrderStatus, DELIVERED } from '../firebase';
 
 
 
-const CustomerViewTracking = () => {
+function CustomerViewTracking({route}) {
     const mapRef = useRef()
     const markerRef = useRef()
+    const navigation = useNavigation()
     
 
     const [state, setState] = useState({latitude: 33.7756, longitude: -84.3963,
@@ -46,7 +48,7 @@ const CustomerViewTracking = () => {
     useEffect(() => {
         async function updateLoc() {
             const interval = setInterval(async () => {
-                var position = await getLocation(null) //TODO: get specific driver_id and pass in here
+                var position = await getLocation(route.params.id)
                 animate(position[0], position[1])
                 setState({latitude: position[0], longitude: position[1],
                     coordinate: new AnimatedRegion({
@@ -60,6 +62,13 @@ const CustomerViewTracking = () => {
         }
         updateLoc()
         
+    })
+
+    useEffect(async () => {
+        var status = await getOrderStatus(route.params.id);
+        if (status == DELIVERED) {
+            navigation.navigate("CompleteOrder")
+        }
     })
 
   return (
