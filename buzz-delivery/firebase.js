@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import * as firebase from "firebase/app";
-import { getFirestore, setDoc, doc, collection, arrayRemove, arrayUnion, getDoc, updateDoc, getDocs } from 'firebase/firestore';
+import { getFirestore, setDoc, doc, deleteDoc, collection, arrayRemove, arrayUnion, getDoc, updateDoc, getDocs } from 'firebase/firestore';
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -236,6 +236,7 @@ export async function updateOrderStage(status) {
   } else if (status == ORDER_PLACED) {
     title = "Order Placed";
     text = "Your driver has placed your order at the restaurant!";
+    await deleteDoc(doc(firestore, "trips", auth.currentUser.uid ))
   }
 
   for (let i=0; i < customers.length; i++) {
@@ -244,5 +245,10 @@ export async function updateOrderStage(status) {
     const cust_doc = await getDoc(doc(firestore, "customer", customers[i]));
     sendPushNotification(cust_doc.data().pushtoken, title, text, "")
   }
+}
+
+export async function getURL(id) {
+  const order_doc = await getDoc(doc(firestore, "trips", id));
+  return order_doc.data().menu_link;
 }
 

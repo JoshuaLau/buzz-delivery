@@ -37,6 +37,10 @@ export default function DriverTracking() {
     requestPermissions()
   }, [])
 
+  const handleHome = () => {
+    navigation.navigate("TripDetails")
+}
+
 
   const startForegroundUpdate = async () => {
     console.log('here')
@@ -146,6 +150,11 @@ export default function DriverTracking() {
       <Text style={styles.buttonText}>Arrived On Campus</Text>
     </View>
     </TouchableOpacity>
+    <TouchableOpacity onPress={handleHome}>
+                <View style={styles.button}>
+                    <Text style={styles.buttonText}>Return to Home</Text>
+                </View>
+        </TouchableOpacity>
     </View>
   )
 }

@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, Linking } from 'react-native'
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { shouldUseActivityState } from 'react-native-screens';
-import { placeOrder } from '../firebase';
+import { placeOrder, getURL } from '../firebase';
 
 
 
@@ -46,6 +46,35 @@ function DriverDetail({ route }) {
         }
     }
 
+    const [url, seturl] = useState('');
+
+    useEffect(() => {
+        getURL(route.params.driver_id).then(u => {
+            seturl(u);
+        });
+    }, []);
+
+    const supportedUrl = "https://" + url;
+
+
+    const OpenUrlButton = ({url, children}) => {
+        const handlePress = useCallback(async () => {
+            const supported = await Linking.canOpenURL(url);
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                Alert.alert("Cannot open this url: ${url}");
+            }
+        }, [url]);
+        return (
+            <TouchableOpacity onPress={handlePress}>
+            <View style={styles.menuButton}>
+            <Text style={styles.buttonText}>{children}</Text>
+            </View>
+            </TouchableOpacity>
+        )
+    };
+
 
 
   return (
@@ -60,11 +89,9 @@ function DriverDetail({ route }) {
                 <Text style={styles.driverInfo}> { driver.dropoffLocation } </Text>
             </View>
             
-            <TouchableOpacity>
-                <View style={styles.menuButton}>
-                    <Text style={styles.buttonText}>View Menu</Text>
-                </View>
-            </TouchableOpacity>
+            <View>
+            <OpenUrlButton url={supportedUrl}>Menu Link</OpenUrlButton>
+            </View>
 
             <Text style={styles.promptText}> Order </Text>
             <TextInput

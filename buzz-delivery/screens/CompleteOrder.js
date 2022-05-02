@@ -11,12 +11,18 @@ const assignRole = () => {
 
 const CompleteOrder = () => {
 
+    const navigation = useNavigation();
+
+    const handleHome = () => {
+        navigation.navigate("AvailableDrivers")
+    }
+
     return(
         <View style={styles.content}>
             <Text style={styles.titleText}> Completed Order </Text>
             
             <Text style={styles.bodyText}> Order delivered! Enjoy your food! 🥳 </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleHome}>
                 <View style={styles.button}>
                     <Text style={styles.buttonText}>Return to Home</Text>
                 </View>
