@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native"
 import * as TaskManager from "expo-task-manager"
 import * as Location from "expo-location"
+import { useNavigation } from '@react-navigation/core';
 import { updateLocation, updateOrderStage, DELIVERED } from "../firebase"
 import { showMessage } from "react-native-flash-message"
 
@@ -28,7 +29,8 @@ TaskManager.defineTask(LOCATION_TASK_NAME, async ({ data, error }) => {
 
 export default function DriverTracking() {
 
-  // Request permissions right after starting the app
+  const navigation = useNavigation();
+
   useEffect(() => {
     const requestPermissions = async () => {
       const foreground = await Location.requestForegroundPermissionsAsync()

@@ -27,17 +27,31 @@ function DriverDetail({ route }) {
         setInputField( {[e.target.name]: e.target.value})
     }
 
+    function isNumeric(str) {
+        return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+               !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+      }
+
     const handleOrderConfirmation = () => {
         try {
-            placeOrder(order, price, driver.id)
-            showMessage({
-                message: "Your order has been placed!",
-                type: "info",
-            });
-            navigation.navigate("PaymentScreen", {
-                driver_id: driver.id
-              })
+            if (isNumeric(price)) {
+                placeOrder(order, price, driver.id)
+                showMessage({
+                    message: "Your order has been placed!",
+                    type: "info",
+                });
+                navigation.navigate("PaymentScreen", {
+                    driver_id: driver.id
+                  })
+            } else {
+                showMessage({
+                    message: "Invalid Price.",
+                    type: "error",
+                  });
+            }
+            
         } catch (error) {
+            console.log(error)
             showMessage({
                 message: "Something went wrong when trying to place your order. Please try again." + error,
                 type: "error",
@@ -54,7 +68,7 @@ function DriverDetail({ route }) {
         });
     }, []);
 
-    const supportedUrl = "https://" + url;
+    const supportedUrl = url;
 
 
     const OpenUrlButton = ({url, children}) => {

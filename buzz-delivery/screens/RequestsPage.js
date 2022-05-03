@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert, ScrollView, RefreshControl, StatusBar } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
@@ -9,6 +9,10 @@ import { getOrders, ORDER_PLACED, updateOrderStage } from '../firebase';
 function RequestsPage({ route }) {
 
     const navigation = useNavigation()
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+      }
 
     const [refreshed, setRefreshed] = useState(false);
     const [buttonEnabled, setButtonEnabled] = useState(true);
@@ -40,7 +44,7 @@ function RequestsPage({ route }) {
       });
       });
 
-    const handleRefresh = () => {
+    const handleRefresh = React.useCallback(() => {
         setRefreshed(true);
             var orders_temp = [];
             var customers = [];
@@ -64,7 +68,8 @@ function RequestsPage({ route }) {
             message: "Fetching new orders.",
             type: "info",
         });
-    }
+        wait(2000).then(() => setRefreshed(false));
+    });
 
     const handleArrival = () => {
         setButtonEnabled(false);
@@ -78,10 +83,14 @@ function RequestsPage({ route }) {
     }
 
   return (
-    <View>
+    <View style={styles.container}>
+        <ScrollView refreshControl={<RefreshControl
+            refreshing={refreshed}
+            onRefresh={handleRefresh}
+          />}>
         <Text style={styles.titleText}>Order Summary</Text>
         {
-            refreshed ? orders.map((item, index) => {
+            orders.map((item, index) => {
                 return <ListItem
                 Component={TouchableHighlight}
                 containerStyle={{}}
@@ -102,30 +111,8 @@ function RequestsPage({ route }) {
                 </ListItem.Content>
             </ListItem>
             })
-            : emptyList.map((item, index) => {
-                return <ListItem
-                Component={TouchableHighlight}
-                containerStyle={{}}
-                disabledStyle={{ opacity: 0.5 }}
-                key={index}
-                pad={20}
-            >
-                <ListItem.Content>
-                <ListItem.Title>
-                    <Text>{item.name}</Text>
-                </ListItem.Title>
-                <ListItem.Subtitle>
-                    <Text>{item.order}</Text>
-                </ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
-            })
         }
-        <TouchableOpacity onPress={handleRefresh}>
-            <View style={styles.button}>
-                <Text style={styles.buttonText}>Refresh</Text>
-            </View>
-        </TouchableOpacity>
+        </ScrollView>
         <TouchableOpacity onPress={handleArrival}>
             <View style={styles.button}>
                 <Text style={styles.buttonText}>Arrived At Restaurant</Text>
@@ -143,6 +130,9 @@ const styles = StyleSheet.create({
         paddingVertical: 14,
         paddingHorizontal: 10,
         backgroundColor:'#f01d71',
+        position: 'absolute',
+        bottom: 100,
+        right: 80,
         marginTop:40
     },
     buttonText: {
@@ -160,5 +150,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 40,
         marginBottom: 10
-    }
+    },
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+      }
 })

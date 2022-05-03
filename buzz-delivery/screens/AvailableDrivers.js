@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, ScrollView, RefreshControl } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/core'; // used to navigate from screen to screen
+import { useNavigation, useIsFocused } from '@react-navigation/core'; // used to navigate from screen to screen
 import { List, ListItem, Icon } from "react-native-elements";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import DriverCard from '../components/DriverCard';
@@ -14,9 +14,40 @@ async function getDrivers() {
     return availableDriversWithDetails;
 }
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
 const AvailableDrivers = () => {
 
     const [availableDrivers, setAvailableDrivers] = useState([]);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    var drivers = [];
+    getDrivers().then(details => {
+        details.forEach(detail => {
+            drivers.push(
+                {
+                    restaurant: detail.restaurant_name,
+                    name: detail.driver,
+                    dropoffLocation: detail.drop_location,
+                    estimatedTime: detail.estimated_time,
+                    id: detail.id
+                }
+            )
+        })})
+        setAvailableDrivers(drivers);
+    wait(2000).then(() => setRefreshing(false));
+    }, []);
+
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+
+      },[isFocused]);
 
     useEffect(() => {
         var drivers = [];
@@ -37,7 +68,11 @@ const AvailableDrivers = () => {
     }, []);
 
     return(
-        <ScrollView>
+        <ScrollView
+        refreshControl={<RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />}>
             <Text style={styles.titleText}> Available Drivers </Text>
             { availableDrivers.map(driver => (
                 <DriverCard driver = {driver}></DriverCard>
