@@ -23,6 +23,7 @@ const SignUp = () => {
         is_driver = true;
     }
     try {
+      if (name != '' && venmo != '') {
         var user = await createUser(email, password, is_driver, name, venmo);
         if (user == null) {
           alert("Invalid Email or Password. Make sure Password is at least 6 characters!")
@@ -33,6 +34,9 @@ const SignUp = () => {
             type: "success",
           });
         }
+      } else {
+        alert("Fill out all fields of signup!");
+      }
     } catch (error) {
         showMessage({
             message: "There was something wrong with your information. Please try again.",

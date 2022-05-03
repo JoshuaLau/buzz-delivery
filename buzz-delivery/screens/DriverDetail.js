@@ -34,18 +34,26 @@ function DriverDetail({ route }) {
 
     const handleOrderConfirmation = () => {
         try {
-            if (isNumeric(price)) {
-                placeOrder(order, price, driver.id)
-                showMessage({
+            if (order != '' && price != '') {
+                if (isNumeric(price)) {
+                    placeOrder(order, price, driver.id)
+                    showMessage({
                     message: "Your order has been placed!",
                     type: "info",
-                });
-                navigation.navigate("PaymentScreen", {
-                    driver_id: driver.id
-                  })
+                    });
+                    navigation.navigate("PaymentScreen", {
+                        driver_id: driver.id
+                    })
+                } else {
+                    showMessage({
+                        message: "Invalid Price.",
+                        type: "error",
+                      });
+                }
+                
             } else {
                 showMessage({
-                    message: "Invalid Price.",
+                    message: "All fields must be completed!",
                     type: "error",
                   });
             }
