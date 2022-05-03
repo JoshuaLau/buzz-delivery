@@ -17,21 +17,22 @@ const SignUp = () => {
 
   const navigation = useNavigation()
 
-  const signup = () => {
+  const signup = async () => {
     var is_driver = false;
     if (role == "Driver") {
         is_driver = true;
     }
     try {
-        var user = createUser(email, password, is_driver, name, venmo);
+        var user = await createUser(email, password, is_driver, name, venmo);
         if (user == null) {
           alert("Invalid Email or Password. Make sure Password is at least 6 characters!")
-        }
+        } else {
         navigation.goBack()
         showMessage({
             message: "Sign Up was successful!",
             type: "success",
           });
+        }
     } catch (error) {
         showMessage({
             message: "There was something wrong with your information. Please try again.",
